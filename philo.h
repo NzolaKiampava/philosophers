@@ -31,6 +31,7 @@ typedef struct s_philosopher
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat_count;
+	struct s_data		*data; // Pointer to shared data structure
 }	t_philosopher;
 
 typedef struct s_data
@@ -43,13 +44,24 @@ typedef struct s_data
 	int					time_to_sleep;
 	int					must_eat_count;
 	long long			start_time;
-	pthread_mutex_t		print_mutex;					
+	pthread_mutex_t		print_mutex; // Mutex for printing syncronized messages					
 }	t_data;
 
+// Utility functions
 long long	get_time_in_ms(void);
+int			check_death(t_data *data);
+
+// Philosophers functions
 void		philo_routine(void *arg);
 void		init_philo(t_data *data);
 void		init_mutexes(t_data *data);
 void		destroy_mutexes(t_data *data);
+
+// Core simulation functions
+void		start_simulation(t_data *data);
+
+// Action and state management
+void		eat(t_philosopher *philo, t_data *data);
+void		sleep_and_think(t_philosopher *philo, t_data *data);
 
 #endif
