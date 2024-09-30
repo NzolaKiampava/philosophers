@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "philo.h"
+
 static void	print_action(t_philosopher *philo, char *action, t_data *data)
 {
 	long long	timestamp;
