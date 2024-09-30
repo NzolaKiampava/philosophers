@@ -6,7 +6,7 @@
 /*   By: nkiampav <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:54:38 by nkiampav          #+#    #+#             */
-/*   Updated: 2024/09/30 13:02:25 by nkiampav         ###   ########.fr       */
+/*   Updated: 2024/09/30 14:11:04 by nkiampav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ int	main(int argc, char **argv)
 		return (1);
 	init_mutexes(&data);
 	init_philo(&data);
-
-	// TODO: Start philo threads and simulation logic
-	
+	start_simulation(&data);	
 	destroy_mutexes(&data);
 	return (0);
 }
