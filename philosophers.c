@@ -15,10 +15,22 @@
 void	*philo_routine(void *arg)
 {
 	t_philosopher	*philo;
+	t_data		*data;
 
 	philo = (t_philosopher *)arg;
+	data = (t_data *)philo->data;
 
-	// TODO: philo eating, thinking and sleeping logic
+	while (1)
+	{
+		eat(philo, data);
+		sleep_and_think(philo, data);
+
+		if (data->must_eat_count != -1)
+		{
+			if (philo->meals_eaten >= data->must_eat_count)
+				break ;
+		}
+	}
 	return (NULL);
 }
 
@@ -66,4 +78,3 @@ void	destroy_mutexes(t_data *data)
 		pthread_mutex_destroy(&data->forks[i]);
 	pthread_mutex_destroy(&data->print_mutex);
 }
-
