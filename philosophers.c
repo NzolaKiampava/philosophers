@@ -40,9 +40,9 @@ void	init_philo(t_data *data)
 	double		id_fork;
 	pthread_t	t_id;
 
-	i = 0;
+	i = -1;
 	data->philo = malloc(sizeof(t_philosopher) * data->num_philo);
-	while (i < data->num_philo)
+	while (++i < data->num_philo)
 	{
 		id_fork = (i + 1) % data->num_fork;
 		t_id = &data->philo[i].thread;
@@ -54,7 +54,6 @@ void	init_philo(t_data *data)
 		data->philo[i].time_to_sleep = data->time_to_sleep;
 		data->philo[i].must_eat_count = data->must_eat_count;
 		pthread_create(t_id, NULL, philo_routine, &data->philo[i]);
-		i++;
 	}
 }
 
