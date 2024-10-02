@@ -46,7 +46,7 @@ void	sleep_and_think(t_philosopher *philo, t_data *data)
 void	start_simulation(t_data *data)
 {
 	int			i;
-	pthread_t	t_id;
+	pthread_t		t_id;
 
 	data->start_time = get_time_in_ms();
 	i = -1;
