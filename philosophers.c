@@ -37,23 +37,23 @@ void	*philo_routine(void *arg)
 void	init_philo(t_data *data)
 {
 	int			i;
-	double		id_fork;
-	pthread_t	t_id;
+	//double		id_fork;
+	//pthread_t	t_id;
 
 	i = -1;
 	data->philo = malloc(sizeof(t_philosopher) * data->num_philo);
 	while (++i < data->num_philo)
 	{
-		id_fork = (i + 1) % data->num_fork;
-		t_id = &data->philo[i].thread;
+		//id_fork = (i + 1) % data->num_fork;
+		//t_id = &data->philo[i].thread;
 		data->philo[i].id = i + 1;
 		data->philo[i].left_fork = &data->forks[i];
-		data->philo[i].right_fork = &data->forks[id_fork];
+		data->philo[i].right_fork = &data->forks[(i + 1) % data->num_fork];
 		data->philo[i].time_to_die = data->time_to_die;
 		data->philo[i].time_to_eat = data->time_to_eat;
 		data->philo[i].time_to_sleep = data->time_to_sleep;
 		data->philo[i].must_eat_count = data->must_eat_count;
-		pthread_create(t_id, NULL, philo_routine, &data->philo[i]);
+		pthread_create(&data->philo[i].thread, NULL, philo_routine, &data->philo[i]);
 	}
 }
 
