@@ -24,7 +24,7 @@ typedef struct s_philosopher
 	int					id;
 	pthread_t			thread;
 	pthread_mutex_t		*left_fork;
-	pthread_mutex_t		*rigth_fork;
+	pthread_mutex_t		*right_fork;
 	long long			last_meal_time;
 	int					meals_eaten;
 	int					time_to_die;
@@ -52,7 +52,7 @@ long long	get_time_in_ms(void);
 int			check_death(t_data *data);
 
 // Philosophers functions
-void		philo_routine(void *arg);
+void		*philo_routine(void *arg);
 void		init_philo(t_data *data);
 void		init_mutexes(t_data *data);
 void		destroy_mutexes(t_data *data);
