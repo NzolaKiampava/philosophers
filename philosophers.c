@@ -25,11 +25,15 @@ void	*philo_routine(void *arg)
 		eat(philo, data);
 		sleep_and_think(philo, data);
 
+		if (data->must_eat_count != -1 && philo->meals_eaten >= data->must_eat_count)
+			break ;
+		/*
 		if (data->must_eat_count != -1)
 		{
 			if (philo->meals_eaten >= data->must_eat_count)
 				break ;
 		}
+		*/
 	}
 	return (NULL);
 }
