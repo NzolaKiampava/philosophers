@@ -46,15 +46,15 @@ void	sleep_and_think(t_philosopher *philo, t_data *data)
 void	start_simulation(t_data *data)
 {
 	int			i;
-	pthread_t		t_id;
+	//pthread_t		t_id;
 
 	data->start_time = get_time_in_ms();
 	i = -1;
 	while (++i < data->num_philo)
 	{
-		t_id = &data->philo[i].thread;
+		//t_id = &data->philo[i].thread;
 		data->philo[i].last_meal_time = data->start_time;
-		pthread_create(t_id, NULL, philo_routine, &data->philo[i]);
+		pthread_create(&data->philo[i].thread, NULL, philo_routine, &data->philo[i]);
 	}
 
 	i = -1;
