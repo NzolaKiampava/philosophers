@@ -19,6 +19,9 @@
 # include <unistd.h>
 # include <sys/time.h>
 
+# define CYAN "\e[36m"
+# define GREEN "\e[32m"
+
 typedef struct s_philosopher
 {
 	int					id;
