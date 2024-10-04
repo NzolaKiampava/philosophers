@@ -63,7 +63,7 @@ void	init_philo(t_data *data)
 		data->philo[i].must_eat_count = data->must_eat_count;
 		data->philo[i].meals_eaten = 0;
 		data->philo[i].data = data;
-		if (pthread_create(&data->philo[i].thread, NULL, philo_routine, &data->philo[i]) != NULL)
+		if (pthread_create(&data->philo[i].thread, NULL, philo_routine, &data->philo[i]) != 0)
 		{
 			printf("Error: Failed to create thread for philosopher %d\n", i + 1);
 			exit(1);
@@ -76,10 +76,25 @@ void	init_mutexes(t_data *data)
 	int	i;
 
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philo);
+	if (!data->forks)
+	{
+		printf("Error allocating memory for forks\n");
+		exit(1);
+	}
 	i = -1;
 	while (++i < data->num_philo)
-		pthread_mutex_init(&data->forks[i], NULL);
-	pthread_mutex_init(&data->print_mutex, NULL);
+	{
+		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
+		{
+			printf("Error initializing mutex for fork %d\n", i);
+			exit(1);
+		}
+	}
+	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
+	{
+		printf("Error initializing print mutex\n");
+		exit(1);
+	}
 }
 
 void	destroy_mutexes(t_data *data)
