@@ -15,11 +15,10 @@
 void	*philo_routine(void *arg)
 {
 	t_philosopher	*philo;
-	t_data		*data;
+	t_data			*data;
 
 	philo = (t_philosopher *)arg;
 	data = (t_data *)philo->data;
-
 	while (1)
 	{
 		eat(philo, data);
@@ -46,18 +45,29 @@ void	init_philo(t_data *data)
 
 	i = -1;
 	data->philo = malloc(sizeof(t_philosopher) * data->num_philo);
+	if (!data->philo)
+	{
+		printf("Error: Failed to allocate memory fo philosophers\n");
+		exit(1);
+	}
 	while (++i < data->num_philo)
 	{
-		//id_fork = (i + 1) % data->num_fork;
+		//id_fork = (i + 1) % data->num_philo;
 		//t_id = &data->philo[i].thread;
 		data->philo[i].id = i + 1;
 		data->philo[i].left_fork = &data->forks[i];
-		data->philo[i].right_fork = &data->forks[(i + 1) % data->num_fork];
+		data->philo[i].right_fork = &data->forks[(i + 1) % data->num_philo];
 		data->philo[i].time_to_die = data->time_to_die;
 		data->philo[i].time_to_eat = data->time_to_eat;
 		data->philo[i].time_to_sleep = data->time_to_sleep;
 		data->philo[i].must_eat_count = data->must_eat_count;
-		pthread_create(&data->philo[i].thread, NULL, philo_routine, &data->philo[i]);
+		data->philo[i].meals_eaten = 0;
+		data->philo[i].data = data;
+		if (pthread_create(&data->philo[i].thread, NULL, philo_routine, &data->philo[i]) != NULL)
+		{
+			printf("Error: Failed to create thread for philosopher %d\n", i + 1);
+			exit(1);
+		}
 	}
 }
 
@@ -75,7 +85,7 @@ void	init_mutexes(t_data *data)
 void	destroy_mutexes(t_data *data)
 {
 	int	i;
-	
+
 	i = -1;
 	while (++i < data->num_philo)
 		pthread_mutex_destroy(&data->forks[i]);
