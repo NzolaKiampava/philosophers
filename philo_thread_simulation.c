@@ -24,14 +24,18 @@ static void	print_action(t_philosopher *philo, char *action, t_data *data)
 
 void	eat(t_philosopher *philo, t_data *data)
 {
+	if (philo->id % 2 == 0)
+		usleep(100);
 	pthread_mutex_lock(philo->left_fork);
 	print_action(philo, "has taken a fork", data);
 	pthread_mutex_lock(philo->right_fork);
 	print_action(philo, "has taken a fork", data);
+
 	philo->last_meal_time = get_time_in_ms();
 	print_action(philo, "is eating", data);
 	usleep(data->time_to_eat * 1000);
-	philo->meal_eaten++;
+	philo->meals_eaten++;
+
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 }
@@ -39,14 +43,15 @@ void	eat(t_philosopher *philo, t_data *data)
 void	sleep_and_think(t_philosopher *philo, t_data *data)
 {
 	print_action(philo, "is sleeping", data);
-	usleep(data->time_to_sleep * 1000);
+	usleep(data->time_to_sleep * 1000 + (rand() % 100));
 	print_action(philo, "is thinking", data);
+	usleep(100 + (rand() % 100));
 }
 
 void	start_simulation(t_data *data)
 {
 	int			i;
-	//pthread_t		t_id;
+	//pthread_t	t_id;
 
 	data->start_time = get_time_in_ms();
 	i = -1;
