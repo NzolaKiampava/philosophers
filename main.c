@@ -16,7 +16,7 @@ int	parse_arguments(int argc, char **argv, t_data *data)
 {
 	if (argc != 5 && argc != 6)
 	{
-		printf("Usage: %s num_philo t_die t_eat t_sleep [eat_count]\n", argv[0]);
+		printf(STR_USAGE, argv[0]);
 		return (1);
 	}
 	data->num_philo = atoi(argv[1]);
@@ -32,13 +32,31 @@ int	parse_arguments(int argc, char **argv, t_data *data)
 
 int	main(int argc, char **argv)
 {
-	t_data	data;
+    t_data data;
 
-	if (parse_arguments(argc, argv, &data))
-		return (1);
-	init_mutexes(&data);
-	init_philo(&data);
-	start_simulation(&data);	
-	destroy_mutexes(&data);
-	return (0);
+    // Parse command-line arguments
+    if (parse_arguments(argc, argv, &data)) {
+        return (1); // Error in parsing
+    }
+
+    // Initialize mutexes
+    if (init_mutexes(&data) != 0) {
+        return (1); // Error in mutex initialization
+    }
+
+    // Initialize philosophers
+    if (init_philo(&data) != 0) {
+        destroy_mutexes(&data); // Clean up mutexes if initialization fails
+        return (1); // Error in philosopher initialization
+    }
+
+    // Start the simulation
+    start_simulation(&data);
+
+    // Clean up resources after the simulation completes
+    destroy_mutexes(&data); // Ensure all mutexes are destroyed
+    free(data.philo); // Free the philosophers array
+    free(data.forks); // Free the forks array
+
+    return (0); // Successful termination
 }
