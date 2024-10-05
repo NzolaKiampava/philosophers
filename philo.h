@@ -18,9 +18,22 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <string.h>
 
-# define CYAN "\e[36m"
-# define GREEN "\e[32m"
+# define BOLD_WHITE "\033[1;37m"
+# define PURPLE "\033[35m"
+# define CYAN   "\033[36m"
+# define GREEN  "\033[32m"
+# define RESET  "\033[0m"
+
+# define STR_USAGE CYAN "%s Usage: ./philo <number_of_philosophers> \
+<time_to_die> <time_to_eat> <time_to_sleep> \
+[must_eat_count]\n" RESET
+
+# define STR_FORK GREEN "has taken a fork" RESET
+# define STR_SLEEP CYAN "is sleeping" RESET
+# define STR_EAT PURPLE "is eating" RESET
+# define STR_THINK BOLD_WHITE "is thinking" RESET
 
 typedef struct s_philosopher
 {
@@ -56,8 +69,8 @@ int			check_death(t_data *data);
 
 // Philosophers functions
 void		*philo_routine(void *arg);
-void		init_philo(t_data *data);
-void		init_mutexes(t_data *data);
+int		init_philo(t_data *data);
+int		init_mutexes(t_data *data);
 void		destroy_mutexes(t_data *data);
 
 // Core simulation functions
