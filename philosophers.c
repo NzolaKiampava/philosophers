@@ -14,30 +14,23 @@
 
 void	*philo_routine(void *arg)
 {
-	t_philosopher	*philo;
-	t_data			*data;
+    t_philosopher *philo = (t_philosopher *)arg;
+    t_data *data = philo->data;
 
-	philo = (t_philosopher *)arg;
-	data = (t_data *)philo->data;
-	while (1)
-	{
-		eat(philo, data);
-		sleep_and_think(philo, data);
+    while (1) {
+        eat(philo, data);
+        sleep_and_think(philo, data);
 
-		if (data->must_eat_count != -1 && philo->meals_eaten >= data->must_eat_count)
-			break ;
-		/*
-		if (data->must_eat_count != -1)
-		{
-			if (philo->meals_eaten >= data->must_eat_count)
-				break ;
-		}
-		*/
-	}
-	return (NULL);
+        // Check if the philosopher has eaten enough times
+        if (data->must_eat_count != -1 && philo->meals_eaten >= data->must_eat_count) {
+            //print_action(philo, "has finished all meals", data); // Print the finishing message
+            break;  // Exit loop after eating enough times
+        }
+    }
+    return (NULL);
 }
 
-void	init_philo(t_data *data)
+int	init_philo(t_data *data)
 {
 	int			i;
 	//double		id_fork;
@@ -47,8 +40,8 @@ void	init_philo(t_data *data)
 	data->philo = malloc(sizeof(t_philosopher) * data->num_philo);
 	if (!data->philo)
 	{
-		printf("Error: Failed to allocate memory fo philosophers\n");
-		exit(1);
+		fprintf(stderr, "Error: Failed to allocate memory fo philosophers\n");
+		return (-1);
 	}
 	while (++i < data->num_philo)
 	{
@@ -66,43 +59,52 @@ void	init_philo(t_data *data)
 		if (pthread_create(&data->philo[i].thread, NULL, philo_routine, &data->philo[i]) != 0)
 		{
 			printf("Error: Failed to create thread for philosopher %d\n", i + 1);
-			exit(1);
+		    for (int j = 0; j < i; j++) {
+            	pthread_cancel(data->philo[j].thread); // Cancel previously created threads
+            }
+            free(data->philo);
+            return (-1); // Indicate failure
 		}
 	}
+	return (0);
 }
 
-void	init_mutexes(t_data *data)
+int init_mutexes(t_data *data)
 {
 	int	i;
 
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philo);
 	if (!data->forks)
 	{
-		printf("Error allocating memory for forks\n");
-		exit(1);
+		fprintf(stderr, "Error allocating memory for forks\n");
+		return (-1);
 	}
 	i = -1;
-	while (++i < data->num_philo)
-	{
-		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-		{
-			printf("Error initializing mutex for fork %d\n", i);
-			exit(1);
-		}
-	}
-	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
-	{
-		printf("Error initializing print mutex\n");
-		exit(1);
-	}
+	while (++i < data->num_philo) {
+        if (pthread_mutex_init(&data->forks[i], NULL) != 0) {
+            printf("Error initializing mutex for fork %d\n", i);
+            free(data->forks); // Free allocated mutexes on error
+            return -1; // Indicate failure
+        }
+    }
+    if (pthread_mutex_init(&data->print_mutex, NULL) != 0) {
+        printf("Error initializing print mutex\n");
+        free(data->forks); // Free allocated mutexes on error
+        return -1; // Indicate failure
+    }
+    return 0; // Indicate success
 }
 
 void	destroy_mutexes(t_data *data)
 {
-	int	i;
+    int i;
 
-	i = -1;
-	while (++i < data->num_philo)
-		pthread_mutex_destroy(&data->forks[i]);
-	pthread_mutex_destroy(&data->print_mutex);
+    if (data->forks) {
+        for (i = 0; i < data->num_philo; i++) {
+            pthread_mutex_destroy(&data->forks[i]); // Destroy each mutex
+        }
+        free(data->forks); // Free the forks array
+        data->forks = NULL; // Set to NULL to avoid double free
+    }
+    pthread_mutex_destroy(&data->print_mutex); // Destroy the print mutex
 }
