@@ -60,10 +60,10 @@ int	init_philo(t_data *data)
 		{
 			printf("Error: Failed to create thread for philosopher %d\n", i + 1);
 		    for (int j = 0; j < i; j++) {
-            	pthread_cancel(data->philo[j].thread); // Cancel previously created threads
-            }
-            free(data->philo);
-            return (-1); // Indicate failure
+	            	pthread_cancel(data->philo[j].thread); // Cancel previously created threads
+	            }
+	            free(data->philo);
+	            return (-1); // Indicate failure
 		}
 	}
 	return (0);
@@ -99,10 +99,10 @@ void	destroy_mutexes(t_data *data)
 {
     int i;
 
+    i = -1;	
     if (data->forks) {
-        for (i = 0; i < data->num_philo; i++) {
-            pthread_mutex_destroy(&data->forks[i]); // Destroy each mutex
-        }
+	while (++i < data->num_philo)
+		pthread_mutex_destroy(&data->forks[i]); // Destroy each mutex
         free(data->forks); // Free the forks array
         data->forks = NULL; // Set to NULL to avoid double free
     }
