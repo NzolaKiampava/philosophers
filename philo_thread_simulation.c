@@ -65,19 +65,31 @@ void	start_simulation(t_data *data)
     while (++i < data->num_philo)
     {
     	data->philo[i].last_meal_time = data->start_time;
-        pthread_create(&data->philo[i].thread, NULL, philo_routine, &data->philo[i]);
+        if (pthread_create(&data->philo[i].thread, NULL, philo_routine, &data->philo[i]) != 0)
+        {	
+        	fprintf(stderr, "Error: Failed to create thread for philosopher %d\n", i+1);
+        	return;
+        }
+        pthread_detach(data->philo[i].thread);
     }
 
     // Monitor for deaths
-    if (check_death(data)) 
+    if (check_death(data))
     {
+    	/*
     	i = -1;
     	while (++i < data->num_philo)
     		pthread_detach(data->philo[i].thread);
+    	*/
         return;
     }
+
+    /*
 
     i = -1;
     while (++i < data->num_philo)
     	pthread_join(data->philo[i].thread, NULL);
+
+    */
 }
+
