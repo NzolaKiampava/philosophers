@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-int	parse_arguments(int argc, char **argv, t_data *data)
+static int	parse_arguments(int argc, char **argv, t_data *data)
 {
 	if (argc != 5 && argc != 6)
 	{
