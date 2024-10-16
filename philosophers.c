@@ -82,13 +82,13 @@ int init_mutexes(t_data *data)
 	i = -1;
 	while (++i < data->num_philo) {
         if (pthread_mutex_init(&data->forks[i], NULL) != 0) {
-            printf("Error initializing mutex for fork %d\n", i);
+            fprintf(stderr, "Error initializing mutex for fork %d\n", i);
             free(data->forks); // Free allocated mutexes on error
             return -1; // Indicate failure
         }
     }
     if (pthread_mutex_init(&data->print_mutex, NULL) != 0) {
-        printf("Error initializing print mutex\n");
+        fprintf(stderr, "Error initializing print mutex\n");
         free(data->forks); // Free allocated mutexes on error
         return -1; // Indicate failure
     }
