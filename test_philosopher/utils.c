@@ -16,14 +16,14 @@ long long current_time(void)
 {
     struct timeval  tv;
     gettimeofday(&tv, NULL);
-    return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+    return ((tv.tv_sec * 1000LL) + (tv.tv_usec / 1000));
 }
 
 void custom_sleep(long long time_in_ms)
 {
     long long start = current_time();
     while (current_time() - start < time_in_ms)
-        usleep(100);
+        usleep(1000);
 }
 
 void cleanup(t_data *data)
