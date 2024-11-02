@@ -6,7 +6,7 @@
 #    By: nkiampav <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/19 10:37:58 by nkiampav          #+#    #+#              #
-#    Updated: 2024/10/19 10:38:00 by nkiampav         ###   ########.fr        #
+#    Updated: 2024/11/01 09:48:34 by nkiampav         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,10 @@ NAME = philo
 
 CC = cc
 
-SRCS = 	philo.c \
+SRCS = 	main.c \
 		init.c \
-		philosopher.c \
+		monitor.c \
+		philosophers.c \
 		utils.c \
 
 OBJS = $(SRCS:.c=.o)
