@@ -57,7 +57,7 @@ This will produce an executable called `philosophers`.
 The `philosophers` program accepts the following command-line arguments:
 
 ```bash
-./philosophers [num_philosophers] [time_to_die] [time_to_eat] [time_to_sleep] [num_meals]
+./philo [num_philosophers] [time_to_die] [time_to_eat] [time_to_sleep] [num_meals]
 ```
 
 - **num_philosophers**: Number of philosophers and forks.
@@ -71,7 +71,7 @@ The `philosophers` program accepts the following command-line arguments:
 ```bash
 # Run the simulation with 5 philosophers, 800ms to live without eating,
 # 200ms to eat, 200ms to sleep, and each philosopher must eat 7 times.
-./philosophers 5 800 200 200 7
+./philo 5 800 200 200 7
 ```
 
 In this example:
