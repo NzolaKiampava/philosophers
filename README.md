@@ -110,3 +110,4 @@ This project provides insight into concurrency issues and challenges in resource
 ## License
 
 This project is part of the 42 curriculum and intended for educational purposes.
+In case of doubts feel free to reach me on my email!
