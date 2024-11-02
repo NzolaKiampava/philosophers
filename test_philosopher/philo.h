@@ -26,9 +26,8 @@
 # define RED    "\033[31m"
 # define RESET  "\033[0m"
 
-# define STR_USAGE CYAN "%s Usage: ./philo <number_of_philosophers> \
-<time_to_die> <time_to_eat> <time_to_sleep> \
-[must_eat_count]\n" RESET
+# define STR_USAGE CYAN "%s Usage: ./philo [num_philosophers] [time_to_die] \
+[time_to_eat] [time_to_sleep] [num_meals]\n" RESET
 
 # define STR_FORK GREEN " has taken a fork 🍴" RESET
 # define STR_SLEEP CYAN " is sleeping 😴" RESET
