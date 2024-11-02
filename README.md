@@ -1,7 +1,7 @@
 
 # 🧘 Philosophers 42 Project
 
-Note: Use test_philophers folder, have no leaks!
+Note: Use "test_philosopher" folder, has no leaks!
 
 The "Philosophers" project is a classic concurrent programming exercise from the 42 school curriculum. The aim of the project is to simulate a variation of the Dining Philosophers Problem, showcasing fundamental concepts in multithreading, process synchronization, and avoiding deadlocks.
 
