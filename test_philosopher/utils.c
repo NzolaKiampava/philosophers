@@ -12,26 +12,69 @@
 
 #include "philo.h"
 
-long long current_time(void)
+long long	current_time(void)
 {
-    struct timeval  tv;
-    gettimeofday(&tv, NULL);
-    return ((tv.tv_sec * 1000LL) + (tv.tv_usec / 1000));
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000LL) + (tv.tv_usec / 1000));
 }
 
-void custom_sleep(long long time_in_ms)
+void	custom_sleep(long long time_in_ms)
 {
-    long long start = current_time();
-    while (current_time() - start < time_in_ms)
-        usleep(1000);
+	long long	start;
+
+	start = current_time();
+	while (current_time() - start < time_in_ms)
+		usleep(1000);
 }
 
-void cleanup(t_data *data)
+int	ft_isdigit(int c)
 {
-    for (int i = 0; i < data->number_of_philosophers; i++)
-        pthread_mutex_destroy(&data->forks[i]);
-    pthread_mutex_destroy(&data->print_mutex);
-    pthread_mutex_destroy(&data->death_mutex);
-    free(data->forks);
-    free(data->philosophers);
+	if (c >= '0' && c <= '9')
+		return (c);
+	return (0);
+}
+
+int	ft_atoi(const char *str)
+{
+	int	num;
+	int	isneg;
+	int	i;
+
+	num = 0;
+	isneg = 1;
+	i = 0;
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'
+			|| str[i] == '\n' || str[i] == '\r'
+			|| str[i] == '\v' || str[i] == '\f'))
+		i++;
+	if (str[i] == '+')
+		i++;
+	else if (str[i] == '-')
+	{
+		isneg *= -1;
+		i++;
+	}
+	while (ft_isdigit(str[i]))
+	{
+		num = (num * 10) + (str[i] - '0');
+		i++;
+	}
+	return (num * isneg);
+}
+
+int	ft_is_number(const char *str)
+{
+	int	i;
+
+	i = -1;
+	if (!str || !*str)
+		return (0);
+	while (str[++i])
+	{
+		if (!ft_isdigit((unsigned char)str[i]))
+			return (0);
+	}
+	return (1);
 }
