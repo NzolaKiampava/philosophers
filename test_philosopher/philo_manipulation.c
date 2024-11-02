@@ -18,9 +18,9 @@ void	print_action(t_data *data, int id, const char *action)
 	long long		timestamp_ms;
 	long long		timestamp_us;
 
+	gettimeofday(&tv, NULL);
 	timestamp_ms = (tv.tv_sec * 1000LL) + (tv.tv_usec / 1000);
 	timestamp_us = tv.tv_usec % 1000;
-	gettimeofday(&tv, NULL);
 	pthread_mutex_lock(&data->print_mutex);
 	printf("%lld.%03lld [%d] %s\n", timestamp_ms, timestamp_us, id, action);
 	pthread_mutex_unlock(&data->print_mutex);
