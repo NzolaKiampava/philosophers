@@ -6,7 +6,7 @@
 /*   By: nkiampav <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 10:35:17 by nkiampav          #+#    #+#             */
-/*   Updated: 2024/10/19 10:35:20 by nkiampav         ###   ########.fr       */
+/*   Updated: 2024/11/01 09:47:08 by nkiampav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,22 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
+
+# define BOLD_WHITE "\033[1;37m"
+# define PURPLE "\033[35m"
+# define CYAN   "\033[36m"
+# define GREEN  "\033[32m"
+# define RED    "\033[31m"
+# define RESET  "\033[0m"
+
+# define STR_USAGE CYAN "%s Usage: ./philo <number_of_philosophers> \
+<time_to_die> <time_to_eat> <time_to_sleep> \
+[must_eat_count]\n" RESET
+
+# define STR_FORK GREEN " has taken a fork 🍴" RESET
+# define STR_SLEEP CYAN " is sleeping 😴" RESET
+# define STR_EAT PURPLE " is eating 🍝" RESET
+# define STR_THINK BOLD_WHITE " is thinking 🤔" RESET
 
 typedef struct s_philosopher
 {
