@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "philo.h"
+
 void	print_action(t_data *data, int id, const char *action)
 {
 	struct timeval	tv;
