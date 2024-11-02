@@ -67,4 +67,8 @@ void    *monitor_routine(void *arg);
 void    cleanup(t_data *data);
 long long current_time(void);
 void    custom_sleep(long long time_in_ms);
+int	ft_atoi(const char *str);
+int ft_is_number(const char *str);
+void print_action(t_data *data, int id, const char *action);
+int check_death(t_data *data);
 #endif
