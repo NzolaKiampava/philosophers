@@ -18,6 +18,7 @@ SRCS = 	main.c \
 		init.c \
 		monitor.c \
 		philosophers.c \
+		philo_manipulation.c \
 		utils.c \
 
 OBJS = $(SRCS:.c=.o)
