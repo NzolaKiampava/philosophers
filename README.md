@@ -7,7 +7,7 @@ The "Philosophers" project is a classic concurrent programming exercise from the
 
 In this simulation, multiple philosophers sit at a round table, alternating between eating, sleeping, and thinking. Each philosopher needs two forks to eat, but there are only as many forks as there are philosophers, leading to the need for synchronization and careful management of shared resources.
 
-![It is an image](https://github.com/NzolaKiampava/philosophers/image.png)
+![It is an image]([https://github.com/NzolaKiampava/philosophers/image.png](https://github.com/NzolaKiampava/philosophers/blob/main/image.png))
 
 ## Table of Contents
 - [Overview](#overview)
