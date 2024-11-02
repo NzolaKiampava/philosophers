@@ -6,7 +6,7 @@
 /*   By: nkiampav <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 10:43:26 by nkiampav          #+#    #+#             */
-/*   Updated: 2024/10/19 10:43:34 by nkiampav         ###   ########.fr       */
+/*   Updated: 2024/11/01 08:50:23 by nkiampav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,9 @@ int init_data(t_data *data, int argc, char **argv)
     }
 
     // Initialize the print mutex
-    if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
+    if (pthread_mutex_init(&data->print_mutex, NULL) != 0 || pthread_mutex_init(&data->death_mutex, NULL))
     {
-        printf("Error: Failed to initialize print mutex\n");
-        return (1);
-    }
-
-    // Initialize the death mutex
-    if (pthread_mutex_init(&data->death_mutex, NULL) != 0)
-    {
-        printf("Error: Failed to initialize death mutex\n");
+        printf("Error: Failed to initialize mutex\n");
         return (1);
     }
 
