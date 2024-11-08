@@ -5,44 +5,114 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkiampav <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 13:04:15 by nkiampav          #+#    #+#             */
-/*   Updated: 2024/09/30 13:07:36 by nkiampav         ###   ########.fr       */
+/*   Created: 2024/10/19 10:36:12 by nkiampav          #+#    #+#             */
+/*   Updated: 2024/11/08 10:38:30 by nkiampav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long	get_time_in_ms(void)
+static int ft_isdigit(int c)
 {
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000LL + tv.tv_usec / 1000);
+    if (c >= '0' && c <= '9')
+        return (c);
+    return (0);
 }
 
-int	check_death(t_data *data)
+static int	ft_atoi(const char *str)
 {
+	int	num;
+	int	isneg;
+	int	i;
+
+	num = 0;
+	isneg = 1;
+	i = 0;
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'
+			|| str[i] == '\n' || str[i] == '\r'
+			|| str[i] == '\v' || str[i] == '\f'))
+		i++;
+	if (str[i] == '+')
+		i++;
+	else if (str[i] == '-')
+	{
+		isneg *= -1;
+		i++;
+	}
+	while (ft_isdigit(str[i]))
+	{
+		num = (num * 10) + (str[i] - '0');
+		i++;
+	}
+	return (num * isneg);
+}
+
+void print_status(t_data *data, int id, char *status)
+{
+    pthread_mutex_lock(&data->write_lock);
+    if (!data->someone_died)
+        printf("%lld %d %s\n", get_time() - data->start_time, id + 1, status);
+    pthread_mutex_unlock(&data->write_lock);
+}
+
+int is_valid_number(char *str)
+{
+    long long num;
     int i;
-    struct timeval tv; // Use struct timeval to get microsecond precision
 
-    while (1) {
-        i = -1;  // Reset the counter
-        while (++i < data->num_philo) {
-            // Get the current time with microsecond precision
-            gettimeofday(&tv, NULL);
-            long long cur_time_ms = (tv.tv_sec * 1000LL) + (tv.tv_usec / 1000); // in milliseconds
-            long long cur_time_us = tv.tv_usec; // in microseconds
+    num = 0;
+    i = 0;
+    if (str[0] == '-')
+        return (0);
+    while (str[i])
+    {
+        if (str[i] < '0' || str[i] > '9')
+            return (0);
+        num = (num * 10) + (str[i] - '0');
+        if (num > INT_MAX)
+            return (0);
+        i++;
+    }
+    return (1);
+}
 
-            // Check if the philosopher has exceeded their time to die
-            if (cur_time_ms - data->philo[i].last_meal_time > data->time_to_die) {
-                pthread_mutex_lock(&data->print_mutex);  // Lock for printing
-                // Print the philosopher id and timestamp with microsecond detail
-                printf("%lld.%03lld %d \033[31m died\n\033[0m", cur_time_ms, cur_time_us % 1000, data->philo[i].id);
-                pthread_mutex_unlock(&data->print_mutex);
-                return (1);  // Philosopher died, stop the simulation
-            }
-        }
-        usleep(1000);  // Sleep for 1 ms between checks
+int parse_args(int argc, char **argv, t_data *data)
+{
+    if (argc != 5 && argc != 6)
+    {
+        printf(STR_USAGE);
+        return (1);
+    }
+    if (!is_valid_number(argv[1]) || !is_valid_number(argv[2]) || 
+        !is_valid_number(argv[3]) || !is_valid_number(argv[4]) || 
+        (argc == 6 && !is_valid_number(argv[5])))
+    {
+        printf("Error: Invalid arguments\n");
+        return (1);
+    }
+    data->num_philosophers = ft_atoi(argv[1]);
+    data->time_to_die = ft_atoi(argv[2]);
+    data->time_to_eat = ft_atoi(argv[3]);
+    data->time_to_sleep = ft_atoi(argv[4]);
+    data->must_eat_count = (argc == 6) ? ft_atoi(argv[5]) : -1;
+    data->someone_died = 0;
+    if (data->num_philosophers <= 0 || data->time_to_die <= 0 || 
+        data->time_to_eat <= 0 || data->time_to_sleep <= 0 || 
+        (data->must_eat_count <= 0 && argc == 6))
+    {
+        printf("Error: Invalid arguments\n");
+        return (1);
     }
     return (0);
+}
+
+void	cleanup_simulation(t_data *data)
+{
+    int	i;
+
+    for (i = 0; i < data->num_philosophers; i++)
+        pthread_mutex_destroy(&data->forks[i]);
+    pthread_mutex_destroy(&data->write_lock);
+    free(data->forks);
+    free(data->philosophers);
 }
