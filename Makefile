@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: nkiampav <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/30 13:53:40 by nkiampav          #+#    #+#              #
-#    Updated: 2024/09/30 14:00:35 by nkiampav         ###   ########.fr        #
+#    Created: 2024/10/19 10:37:58 by nkiampav          #+#    #+#              #
+#    Updated: 2024/11/06 09:58:42 by nkiampav         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,11 @@ NAME = philo
 CC = cc
 
 SRCS = 	main.c \
-		philosophers.c \
+		init.c \
+		monitor.c \
+		time.c \
 		utils.c \
-		philo_thread_simulation.c \
+		actions.c \
 
 OBJS = $(SRCS:.c=.o)
 
