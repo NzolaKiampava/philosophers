@@ -6,7 +6,7 @@
 #    By: nkiampav <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/19 10:37:58 by nkiampav          #+#    #+#              #
-#    Updated: 2024/11/06 09:58:42 by nkiampav         ###   ########.fr        #
+#    Updated: 2024/11/09 12:01:42 by nkiampav         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME = philo
 CC = cc
 
 SRCS = 	main.c \
+		parse_arguments.c \
 		init.c \
 		monitor.c \
 		time.c \
