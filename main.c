@@ -17,6 +17,7 @@ int	main(int argc, char **argv)
 	t_data		data;
 	int			i;
 
+	i = -1;
 	if (parse_args(argc, argv, &data))
 		return (1);
 	if (init_simulation(&data))
@@ -24,7 +25,7 @@ int	main(int argc, char **argv)
 		printf("Error: Failed to initialize simulation\n");
 		return (1);
 	}
-	for (i = 0; i < data.num_philosophers; i++)
+	while (++i < data.num_philosophers)
 		pthread_join(data.philosophers[i].thread, NULL);
 	cleanup_simulation(&data);
 	return (0);
