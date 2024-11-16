@@ -146,4 +146,4 @@ All arguments are valid integers
 ## License
 
 This project is part of the 42 curriculum and intended for educational purposes.
-In case of doubts feel free to reach me on my email!
+In case of doubts feel free to reach me on my email [nzolakiampava@gmail.com]! 
