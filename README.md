@@ -50,7 +50,7 @@ To compile the project, navigate to the project directory and run:
 make
 ```
 
-This will produce an executable called `philosophers`.
+This will produce an executable called `philo`.
 
 ---
 
