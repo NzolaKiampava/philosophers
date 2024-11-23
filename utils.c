@@ -12,57 +12,92 @@
 
 #include "philo.h"
 
-static int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (c);
-	return (0);
-}
-
 int	ft_atoi(const char *str)
 {
-	int	num;
-	int	isneg;
-	int	i;
+	int	result;
+	int	sign;
 
-	num = 0;
-	isneg = 1;
-	i = 0;
-	while (str[i] && (str[i] == ' ' || str[i] == '\t'
-			|| str[i] == '\n' || str[i] == '\r'
-			|| str[i] == '\v' || str[i] == '\f'))
-		i++;
-	if (str[i] == '+')
-		i++;
-	else if (str[i] == '-')
+	result = 0;
+	sign = 1;
+	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
+		str++;
+	if (*str == '-')
+		sign = -1;
+	if (*str == '-' || *str == '+')
+		str++;
+	while (*str >= '0' && *str <= '9')
 	{
-		isneg *= -1;
-		i++;
+		result = result * 10 + (*str - '0');
+		str++;
 	}
-	while (ft_isdigit(str[i]))
-	{
-		num = (num * 10) + (str[i] - '0');
-		i++;
-	}
-	return (num * isneg);
+	return (result * sign);
 }
 
 void	print_status(t_data *data, int id, char *status)
 {
-	pthread_mutex_lock(&data->write_lock);
-	if (!data->someone_died)
-		printf("%lld %d %s\n", get_time() - data->start_time, id + 1, status);
-	pthread_mutex_unlock(&data->write_lock);
+	pthread_mutex_lock(&data->print_mutex);
+	if (!check_if_simulation_finished(data))
+		printf("%lld %d %s\n", get_time() - data->start_time, id, status);
+	pthread_mutex_unlock(&data->print_mutex);
 }
 
-void	cleanup_simulation(t_data *data)
+int	validate_number(const char *str)
+{
+	int		i;
+	long	result;
+
+	i = 0;
+	result = 0;
+	if (!str[0])
+		return (0);
+	while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
+		i++;
+	if (str[i] == '+')
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		result = result * 10 + (str[i] - '0');
+		if (result > INT_MAX)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	validate_input(int argc, char **argv)
 {
 	int	i;
 
-	i = -1;
-	while (++i < data->num_philosophers)
-		pthread_mutex_destroy(&data->forks[i]);
-	pthread_mutex_destroy(&data->write_lock);
-	free(data->forks);
-	free(data->philosophers);
+	if (argc != 5 && argc != 6)
+		return (0);
+	i = 1;
+	while (i < argc)
+	{
+		if (!validate_number(argv[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	clean_exit(t_data *data)
+{
+	int	i;
+
+	if (data->forks)
+	{
+		i = -1;
+		while (++i < data->num_philosophers)
+			pthread_mutex_destroy(&data->forks[i]);
+		free(data->forks);
+	}
+	pthread_mutex_destroy(&data->meal_mutex);
+	pthread_mutex_destroy(&data->print_mutex);
+	pthread_mutex_destroy(&data->death_mutex);
+	if (data->philosophers)
+		free(data->philosophers);
 }
