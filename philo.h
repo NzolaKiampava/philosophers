@@ -17,8 +17,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <unistd.h>
 # include <sys/time.h>
+# include <unistd.h>
 # include <limits.h>
 
 # define STR_USAGE "\033[36mUsage: ./philo [num_philosophers] [time_to_die] \
@@ -29,17 +29,18 @@
 # define STR_EAT "\033[35m is eating\033[0m"
 # define STR_THINK "\033[1;37m is thinking\033[0m"
 
-/* Structures */
+typedef struct s_data	t_data;
+
 typedef struct s_philosopher
 {
-	int					id;
-	int					left_fork;
-	int					right_fork;
-	int					meals_eaten;
-	long long			last_meal_time;
-	struct s_data		*data;
-	pthread_t			thread;
-}		t_philosopher;
+	int			id;
+	int			meals_eaten;
+	int			left_fork;
+	int			right_fork;
+	long long	last_meal_time;
+	pthread_t	thread;
+	t_data		*data;
+}	t_philosopher;
 
 typedef struct s_data
 {
@@ -51,37 +52,39 @@ typedef struct s_data
 	int					someone_died;
 	long long			start_time;
 	pthread_mutex_t		*forks;
-	pthread_mutex_t		write_lock;
+	pthread_mutex_t		meal_mutex;
+	pthread_mutex_t		print_mutex;
+	pthread_mutex_t		death_mutex;
 	t_philosopher		*philosophers;
-}		t_data;
+}	t_data;
 
-/* Time functions */
+// Thread_simulation functions
+int			check_if_simulation_finished(t_data *data);
+void		set_simulation_stopped(t_data *data);
+
+// init.c
+int			init_data(t_data *data, int argc, char **argv);
+int			init_philosophers(t_data *data);
+int			init_mutexes(t_data *data);
+
+// utils.c
+int			ft_atoi(const char *str);
+int			validate_input(int argc, char **argv);
+int			validate_number(const char *str);
+void		print_status(t_data *data, int id, char *status);
+void		clean_exit(t_data *data);
+
+// Time functions
 long long	get_time(void);
 void		smart_sleep(long long time);
 
-/* Initialization functions */
-int			init_data(t_data *data);
-int			init_philosophers(t_data *data);
-int			init_mutexes(t_data *data);
-int			init_simulation(t_data *data);
+// monitoring.c
+void		*monitor_philosophers(void *arg);
 
-/* Philosopher actions */
+// actions.c
 void		*philosopher_routine(void *arg);
-void		philo_eat(t_philosopher *philo);
-void		philo_sleep(t_philosopher *philo);
-void		philo_think(t_philosopher *philo);
-
-/* Monitor functions */
-void		*death_monitor(void *arg);
-int			check_if_all_ate(t_data *data);
-
-/* Utility functions */
-void		print_status(t_data *data, int id, char *status);
-int			ft_atoi(const char *str);
-void		cleanup_simulation(t_data *data);
-
-/* Parse Arguments functions*/
-int			is_valid_number(char *str);
-int			parse_args(int argc, char **argv, t_data *data);
+void		release_forks(t_philosopher *philo);
+int			take_forks(t_philosopher *philo);
 
 #endif
+
