@@ -23,8 +23,14 @@ long long	get_time(void)
 void	smart_sleep(long long time)
 {
 	long long	start;
+	long long	current;
 
 	start = get_time();
-	while (get_time() - start < time)
+	while (1)
+	{
+		current = get_time();
+		if (current - start >= time)
+			break ;
 		usleep(500);
+	}
 }
