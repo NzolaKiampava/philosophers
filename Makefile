@@ -15,12 +15,12 @@ NAME = philo
 CC = cc
 
 SRCS = 	main.c \
-		parse_arguments.c \
 		init.c \
 		monitor.c \
-		time.c \
 		utils.c \
 		actions.c \
+		time.c \
+		thread_simulation.c \
 
 OBJS = $(SRCS:.c=.o)
 
