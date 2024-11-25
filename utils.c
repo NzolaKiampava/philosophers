@@ -81,6 +81,16 @@ int	validate_input(int argc, char **argv)
 			return (0);
 		i++;
 	}
+	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[1]) > 200)
+		return (0);
+	if (ft_atoi(argv[2]) < 60)
+		return (0);
+	if (ft_atoi(argv[3]) < 60)
+		return (0);
+	if (ft_atoi(argv[4]) < 60)
+		return (0);
+	if (argc == 6 && ft_atoi(argv[5]) <= 0)
+		return (0);
 	return (1);
 }
 
