@@ -73,9 +73,7 @@ void	*monitor_philosophers(void *arg)
 		}
 		if (check_meals(data))
 		{
-			pthread_mutex_lock(&data->print_mutex);
-			data->someone_died = 1;
-			pthread_mutex_unlock(&data->print_mutex);
+			set_simulation_stopped(data);
 			return (NULL);
 		}
 		usleep(1000);
