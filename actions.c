@@ -6,7 +6,7 @@
 /*   By: nkiampav <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:39:21 by nkiampav          #+#    #+#             */
-/*   Updated: 2024/11/02 16:39:25 by nkiampav         ###   ########.fr       */
+/*   Updated: 2024/11/30 14:16:14 by nkiampav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,18 @@ static int	execute_philosopher_cycle(t_philosopher *philo)
 	print_status(philo->data, philo->id, STR_EAT);
 	smart_sleep(philo->data->time_to_eat);
 	release_forks(philo);
-	if (check_if_simulation_finished(philo->data)
-		|| (philo->data->must_eat_count != -1
-			&& philo->meals_eaten >= philo->data->must_eat_count))
+	if (check_if_simulation_finished(philo->data))
+		return (1);
+	if (philo->data->must_eat_count != -1
+		&& philo->meals_eaten >= philo->data->must_eat_count)
 		return (1);
 	print_status(philo->data, philo->id, STR_SLEEP);
 	smart_sleep(philo->data->time_to_sleep);
 	if (check_if_simulation_finished(philo->data))
 		return (1);
 	print_status(philo->data, philo->id, STR_THINK);
+	if (philo->data->num_philosophers > 2)
+		usleep(500);
 	return (0);
 }
 
@@ -58,18 +61,16 @@ void	*philosopher_routine(void *arg)
 
 int	take_forks(t_philosopher *philo)
 {
+	int	error;
+
 	if (check_if_simulation_finished(philo->data))
 		return (1);
 	if (philo->left_fork < philo->right_fork)
-	{
-		pthread_mutex_lock(&philo->data->forks[philo->left_fork]);
-		pthread_mutex_lock(&philo->data->forks[philo->right_fork]);
-	}
+		error = lock_forks_left_first(philo);
 	else
-	{
-		pthread_mutex_lock(&philo->data->forks[philo->right_fork]);
-		pthread_mutex_lock(&philo->data->forks[philo->left_fork]);
-	}
+		error = lock_forks_right_first(philo);
+	if (error)
+		return (1);
 	if (check_if_simulation_finished(philo->data))
 	{
 		release_forks(philo);
