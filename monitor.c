@@ -6,7 +6,7 @@
 /*   By: nkiampav <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 08:57:31 by nkiampav          #+#    #+#             */
-/*   Updated: 2024/11/07 08:12:00 by nkiampav         ###   ########.fr       */
+/*   Updated: 2024/11/25 12:30:55 by nkiampav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static int	check_meals(t_data *data)
 {
 	int	i;
 	int	finished;
+	int	meals_count;
 
 	if (data->must_eat_count == -1)
 		return (0);
@@ -47,13 +48,16 @@ static int	check_meals(t_data *data)
 	pthread_mutex_lock(&data->meal_mutex);
 	while (++i < data->num_philosophers)
 	{
-		if (data->philosophers[i].meals_eaten < data->must_eat_count)
+		meals_count = data->philosophers[i].meals_eaten;
+		if (meals_count < data->must_eat_count)
 		{
 			finished = 0;
 			break ;
 		}
 	}
 	pthread_mutex_unlock(&data->meal_mutex);
+	if (finished)
+		set_simulation_stopped(data);
 	return (finished);
 }
 
