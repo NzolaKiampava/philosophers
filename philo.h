@@ -61,6 +61,8 @@ typedef struct s_data
 // Thread_simulation functions
 int			check_if_simulation_finished(t_data *data);
 void		set_simulation_stopped(t_data *data);
+int			lock_forks_left_first(t_philosopher *philo);
+int			lock_forks_right_first(t_philosopher *philo);
 
 // init.c
 int			init_data(t_data *data, int argc, char **argv);
@@ -87,4 +89,3 @@ void		release_forks(t_philosopher *philo);
 int			take_forks(t_philosopher *philo);
 
 #endif
-
