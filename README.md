@@ -20,7 +20,7 @@ In this simulation, multiple philosophers sit at a round table, alternating betw
 
 ## Overview
 
-The <b>Dining Philosophers Problem</b> involves five philosophers seated at a round table with a fork between each pair. Philosophers alternate between thinking, eating, and sleeping:
+The <b>Dining Philosophers Problem</b> involves five <b>philosophers</b> seated at a round table with a fork between each pair. Philosophers alternate between thinking, eating, and sleeping:
 - **Thinking**: The philosopher contemplates the mysteries of the universe.
 - **Eating**: The philosopher picks up two forks, one on each side, and eats.
 - **Sleeping**: The philosopher rests after eating.
