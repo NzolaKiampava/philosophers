@@ -1,7 +1,7 @@
 
 # 🧘 Philosophers 42 Project
 
-The "Philosophers" project is a classic concurrent programming exercise from the 42 school curriculum. The aim of the project is to simulate a variation of the Dining Philosophers Problem, showcasing fundamental concepts in multithreading, process synchronization, and avoiding deadlocks.
+The "<b>Philosophers</b>" project is a classic concurrent programming exercise from the 42 school curriculum. The aim of the project is to simulate a variation of the Dining Philosophers Problem, showcasing fundamental concepts in multithreading, process synchronization, and avoiding deadlocks.
 
 In this simulation, multiple philosophers sit at a round table, alternating between eating, sleeping, and thinking. Each philosopher needs two forks to eat, but there are only as many forks as there are philosophers, leading to the need for synchronization and careful management of shared resources.
 
@@ -20,7 +20,7 @@ In this simulation, multiple philosophers sit at a round table, alternating betw
 
 ## Overview
 
-The Dining Philosophers Problem involves five philosophers seated at a round table with a fork between each pair. Philosophers alternate between thinking, eating, and sleeping:
+The <b>Dining Philosophers Problem</b> involves five philosophers seated at a round table with a fork between each pair. Philosophers alternate between thinking, eating, and sleeping:
 - **Thinking**: The philosopher contemplates the mysteries of the universe.
 - **Eating**: The philosopher picks up two forks, one on each side, and eats.
 - **Sleeping**: The philosopher rests after eating.
