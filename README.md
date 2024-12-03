@@ -107,40 +107,34 @@ This project provides insight into concurrency issues and challenges in resource
 
 ## Test Case Checks
 
-1 800 200 200: Single philosopher should die
 
-Only one fork available, can't eat
+```bash
+./philo 1 800 200 200
+#  Single philosopher should die,
+#  Only one fork available, can't eat
 
+./philo 4 310 200 100
+#  Should die due to tight timing
+#  Time to die (310ms) is less than time needed for two eating cycles
 
-4 310 200 100: Should die due to tight timing
+./philo 4 200 205 200
+#  Should die due to timing
+#  Time to eat (205ms) is greater than time to die (200ms)
 
-Time to die (310ms) is less than time needed for two eating cycles
+./philo 5 800 200 200 7
+#  No deaths, stops after 7 meals
+#  Enough time between meals, stops when all philosophers eat 7 times
 
+./philo 4 410 200 200 10
+#  No deaths, stops after 10 meals
+#  Sufficient timing for survival, stops after 10 meals
 
-4 200 205 200: Should die due to timing
+____________________________________________________________
+# All negative number cases should be caught by input validation
+#  Key validation checks:
+    #No negative numbers Valid number of arguments Numbers within reasonable ranges All arguments are valid integers
 
-Time to eat (205ms) is greater than time to die (200ms)
-
-
-5 800 200 200 7: No deaths, stops after 7 meals
-
-Enough time between meals, stops when all philosophers eat 7 times
-
-
-4 410 200 200 10: No deaths, stops after 10 meals
-
-Sufficient timing for survival, stops after 10 meals
-
-
-All negative number cases should be caught by input validation
-
-Key validation checks:
-
-No negative numbers
-Valid number of arguments
-Numbers within reasonable ranges
-All arguments are valid integers
-
+```
 ---
 
 ## License
